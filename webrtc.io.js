@@ -321,6 +321,16 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
     rtc.createPeerConnections();
     rtc.addStreams();
     rtc.sendOffers();
+    var strMsg = JSON.stringify({
+      "eventName": "media_ready",
+      "data": {
+        "socketId": 'null',
+      }
+    });
+    console.log(">>> send: " + strMsg);
+    rtc._socket.send(strMsg, function(error){
+          if(error){console.log(error);}
+        });
   });
 
 }).call(this);
