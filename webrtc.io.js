@@ -115,6 +115,9 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
           var stream = rtc.streams[i];
           pc.addStream(stream);
         }
+        
+        // send offer
+        rtc.sendOffer(data.socketId)
       });
 
       rtc.on('remove_peer_connected', function(data) {  
