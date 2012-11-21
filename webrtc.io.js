@@ -19,6 +19,9 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
   // Holds a connection to the server.
   rtc._socket = null;
 
+  // Holds the local SDP, so that we'll use the same SDP on every peer connection for local end
+  rtc._offer = null;
+
   // Holds callbacks for certain events.
   rtc._events = {};
 
@@ -123,6 +126,7 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
       rtc.on('remove_peer_connected', function(data) {  
         rtc.fire('disconnect stream', data.socketId);
         delete rtc.peerConnections[data.socketId];
+        console.log('remove_peer', data.socketId)
       });
 
       rtc.on('receive_offer', function(data) {
@@ -202,12 +206,18 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
     // TODO: Abstract away video: true, audio: true for offers
 
     pc.createOffer(function(offer) {
-      pc.setLocalDescription(offer);
+      if (rtc._offer == null)
+      {
+        rtc._offer = offer
+      }
+
+      // use the same offer SDP for local end of peer connection
+      pc.setLocalDescription(rtc._offer);
       var strMsg = JSON.stringify({
         "eventName": "send_offer",
         "data": {
           "socketId": socketId,
-          "sdp": offer.sdp
+          "sdp": rtc._offer.sdp
         }
       });
       console.log(">>> send: " + strMsg);
