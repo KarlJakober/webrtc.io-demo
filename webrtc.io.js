@@ -208,11 +208,7 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
     pc.createOffer(function(offer) {
       if (rtc._offer == null)
       {
-        var fake_inline = "inline:0000000000000000000000000000000000000000"
-        var fake_sdp = offer.sdp.replace(/inline:.*/g, fake_inline)
-        console.log('>>> replace result: ' , fake_sdp)
-        var fake_offer = new RTCSessionDescription({type: "offer", sdp: fake_sdp});
-        rtc._offer = fake_offer
+        rtc._offer = offer
       }
 
       // use the same offer SDP for local end of peer connection
