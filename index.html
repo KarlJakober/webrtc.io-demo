@@ -13,7 +13,7 @@
     </div>
     <div id="chatbox">
       <button id="fullscreen">Enter Full Screen</button>
-      <button id="newRoom">Create A New Room</button>
+      <!--<button id="newRoom">Create A New Room</button> -->
       <div id="messages">
       </div>
       <br>
@@ -147,8 +147,9 @@
           }
         }, false);
         rtc.on('receive_chat_msg', function(data) {
-          console.log(data.color);
-          addToChat(data.messages, data.color.toString(16));
+          //console.log(data.color);
+          //addToChat(data.messages, data.color.toString(16));
+          addToChat(data.messages); 
         });
       }
 
@@ -183,7 +184,7 @@
             removeVideo(data);
         });
         initFullScreen();
-        initNewRoom();
+        //initNewRoom();
         initChat();
       }
       
