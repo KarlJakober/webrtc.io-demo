@@ -85,13 +85,13 @@
         }
       }
 
-      function addToChat(msg, color) {
+      function addToChat(msg, username, color) {
         var messages = document.getElementById('messages');
         msg = sanitize(msg);
         if (color) {
           msg = '<span style="color: ' + color + '; padding-left: 15px">' + msg + '</span>';
         } else {
-          msg = '<strong style="padding-left: 15px">' + msg + '</strong>';
+          msg = '<strong style="padding-left: 10px; color:darkgreen">[' + username + ']: </strong>' + '<strong>'+ msg + '</strong>';
         }
         messages.innerHTML = messages.innerHTML + msg + '<br>';
         messages.scrollTop = 10000;
@@ -101,7 +101,7 @@
       {
         var roster = document.getElementById('roster');
         username = sanitize(username)
-        username = '<strong style="padding-left: 10px">' + username + '</strong>';
+        username = '<strong style="padding-left: 10px; color:DarkGreen">' + username + '</strong>';
         roster.innerHTML = roster.innerHTML + username + '<br>';
         roster.scrollTop = 10000;
       }
@@ -157,14 +157,14 @@
                 console.log(error);
               }
             });
-            addToChat(input.value);
+            addToChat(input.value, 'me');
             input.value = "";
           }
         }, false);
         rtc.on('receive_chat_msg', function(data) {
           //console.log(data.color);
           //addToChat(data.messages, data.color.toString(16));
-          addToChat(data.messages); 
+          addToChat(data.messages, data.username);
         });
       }
 
