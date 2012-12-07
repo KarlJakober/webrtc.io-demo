@@ -7,8 +7,14 @@
     <script src="/webrtc.io.js"></script>
   </head>
   <body onload="init()">
+    
+    <div id="rosterbox">
+      <label for='roster'>Roster</label>
+      <div id="roster">
+      </div>
+    </div>
     <div id="videos">
-      <a href="https://github.com/webRTC"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
+      <a href="https://github.com/zhenkai/peets"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
       <video id="you" class="flip" autoplay></video>
     </div>
     <div id="chatbox">
@@ -89,6 +95,15 @@
         }
         messages.innerHTML = messages.innerHTML + msg + '<br>';
         messages.scrollTop = 10000;
+      }
+
+      function addToRoster(username)
+      {
+        var roster = document.getElementById('roster');
+        username = sanitize(username)
+        username = '<strong style="padding-left: 10px">' + username + '</strong>';
+        roster.innerHTML = roster.innerHTML + username + '<br>';
+        roster.scrollTop = 10000;
       }
 
       function sanitize(msg) {
@@ -182,6 +197,9 @@
         rtc.on('disconnect stream', function(data) {
             console.log('remove ' + data);
             removeVideo(data);
+        });
+        rtc.on('new peer', function(data) {
+          addToRoster(data.username);
         });
         initFullScreen();
         //initNewRoom();

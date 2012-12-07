@@ -111,6 +111,7 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
 
       rtc.on('new_peer_connected', function(data) {
         rtc.connections.push(data.socketId);
+        rtc.fire('new peer', data);
 
         console.log("Prepare to create peer connection")
         var pc = rtc.createPeerConnection(data.socketId);
